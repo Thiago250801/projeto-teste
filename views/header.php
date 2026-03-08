@@ -35,4 +35,22 @@
 
 </nav>
 
+<?php
+require_once __DIR__ . '/../helpers/Flash.php';
+
+$flash = Flash::get();
+?>
+
+<?php if($flash): ?>
+
+<div class="alert alert-<?= $flash['type'] ?> alert-dismissible fade show m-4">
+
+<?= htmlspecialchars($flash['message']) ?>
+
+<button class="btn-close" data-bs-dismiss="alert"></button>
+
+</div>
+
+<?php endif; ?> 
+
 <script src="public/js/theme.js"></script>

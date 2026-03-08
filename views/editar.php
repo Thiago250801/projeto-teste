@@ -33,3 +33,5 @@ Atualizar
 </form>
 
 </div>
+
+<?php require 'views/footer.php'; ?>

@@ -27,3 +27,5 @@ $mensagem = $controller->buscar($_GET['id']);
 </div>
 
 </div>
+
+<?php require 'views/footer.php'; ?>

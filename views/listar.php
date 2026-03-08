@@ -128,3 +128,5 @@ onclick="return confirm('Excluir mensagem?')">
 </div>
 
 </div>
+
+<?php require 'views/footer.php'; ?>
