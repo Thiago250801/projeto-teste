@@ -1,22 +1,15 @@
-const toggle = document.getElementById("theme-toggle")
+const toggle = document.getElementById("theme-toggle");
+const icon   = toggle.querySelector("i");
 
-const theme = localStorage.getItem("theme")
-
-if(theme === "dark"){
-document.body.classList.add("dark-mode")
-toggle.innerText = "☀️"
+function applyTheme(dark) {
+  document.body.classList.toggle("dark-mode", dark);
+  icon.className = dark ? "bi bi-sun-fill" : "bi bi-moon-stars-fill";
 }
+
+applyTheme(localStorage.getItem("theme") === "dark");
 
 toggle.addEventListener("click", () => {
-
-document.body.classList.toggle("dark-mode")
-
-if(document.body.classList.contains("dark-mode")){
-localStorage.setItem("theme","dark")
-toggle.innerText="☀️"
-}else{
-localStorage.setItem("theme","light")
-toggle.innerText="🌙"
-}
-
-})
+  const isDark = document.body.classList.contains("dark-mode");
+  localStorage.setItem("theme", isDark ? "light" : "dark");
+  applyTheme(!isDark);
+});
