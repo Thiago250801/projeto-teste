@@ -49,7 +49,7 @@ projeto-teste/
 ├── .gitignore            # Arquivos ignorados para commit
 ├── composer.json         # Dependências do projeto para Composer
 ├── composer.lock         # Travamento de versões exatas do Composer
-├── exluir.php            # Ação de exclusão do registro no DB
+├── excluir.php           # Ação de exclusão do registro no DB
 ├── index.php             # Arquivo principal, contendo o formulário e  tabela html
 ├── README.md             # Documentação
 └── salvar.php            # Ação de salvação do registro no DB
