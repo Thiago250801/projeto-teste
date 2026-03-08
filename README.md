@@ -107,17 +107,23 @@ CREATE TABLE mensagens (
 
 ## Como Usar
 
-1. Acesse o formulário no navegador:
+1. Inicie o servidor embutido do PHP na pasta do projeto:
 
+```bash
+php -S localhost:8000
 ```
-http://localhost/projeto-teste/index.php
+
+2. Acesse o formulário no navegador:
+
+```text
+http://localhost:8000
 ```
 
-2. Preencha o formulário e clique em "Enviar Mensagem"
+3. Preencha o formulário e clique em "Enviar Mensagem"
 
-3. As mensagens serão salvas no banco de dados e listadas na tabela abaixo do formulário
+4. As mensagens serão salvas no banco de dados e listadas na tabela abaixo do formulário
 
-4. Clique em "Excluir" para remover um registro
+5. Clique em "Excluir" para remover um registro
 
 ---
 
