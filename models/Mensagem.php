@@ -5,28 +5,23 @@ class Mensagem {
     private $conn;
     private $table = "mensagens";
 
-    public $id;
-    public $nome;
-    public $email;
-    public $mensagem;
-
     public function __construct($db){
 
         $this->conn = $db;
 
     }
 
-    public function criar(){
+    public function criar($nome,$email,$mensagem){
 
-        $query = "INSERT INTO ".$this->table."
+        $sql = "INSERT INTO ".$this->table."
         (nome,email,mensagem)
         VALUES (:nome,:email,:mensagem)";
 
-        $stmt = $this->conn->prepare($query);
+        $stmt = $this->conn->prepare($sql);
 
-        $stmt->bindParam(":nome",$this->nome);
-        $stmt->bindParam(":email",$this->email);
-        $stmt->bindParam(":mensagem",$this->mensagem);
+        $stmt->bindParam(":nome",$nome);
+        $stmt->bindParam(":email",$email);
+        $stmt->bindParam(":mensagem",$mensagem);
 
         return $stmt->execute();
 
@@ -34,22 +29,54 @@ class Mensagem {
 
     public function listar(){
 
-        $query = "SELECT * FROM ".$this->table." ORDER BY id DESC";
+        $sql = "SELECT * FROM ".$this->table." ORDER BY id DESC";
 
-        $stmt = $this->conn->prepare($query);
+        $stmt = $this->conn->prepare($sql);
+
         $stmt->execute();
 
         return $stmt;
 
     }
 
-    public function deletar(){
+    public function buscar($id){
 
-        $query = "DELETE FROM ".$this->table." WHERE id = :id";
+        $sql = "SELECT * FROM ".$this->table." WHERE id = :id";
 
-        $stmt = $this->conn->prepare($query);
+        $stmt = $this->conn->prepare($sql);
 
-        $stmt->bindParam(":id",$this->id);
+        $stmt->bindParam(":id",$id);
+
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+
+    }
+
+    public function atualizar($id,$nome,$email,$mensagem){
+
+        $sql = "UPDATE ".$this->table."
+        SET nome=:nome,email=:email,mensagem=:mensagem
+        WHERE id=:id";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->bindParam(":id",$id);
+        $stmt->bindParam(":nome",$nome);
+        $stmt->bindParam(":email",$email);
+        $stmt->bindParam(":mensagem",$mensagem);
+
+        return $stmt->execute();
+
+    }
+
+    public function excluir($id){
+
+        $sql = "DELETE FROM ".$this->table." WHERE id = :id";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->bindParam(":id",$id);
 
         return $stmt->execute();
 

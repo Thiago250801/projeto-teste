@@ -18,11 +18,11 @@ class MensagemController {
 
     public function salvar($dados){
 
-        $this->mensagem->nome = $dados['nome'];
-        $this->mensagem->email = $dados['email'];
-        $this->mensagem->mensagem = $dados['mensagem'];
-
-        return $this->mensagem->criar();
+        return $this->mensagem->criar(
+            $dados['nome'],
+            $dados['email'],
+            $dados['mensagem']
+        );
 
     }
 
@@ -32,11 +32,26 @@ class MensagemController {
 
     }
 
+    public function buscar($id){
+
+        return $this->mensagem->buscar($id);
+
+    }
+
+    public function atualizar($dados){
+
+        return $this->mensagem->atualizar(
+            $dados['id'],
+            $dados['nome'],
+            $dados['email'],
+            $dados['mensagem']
+        );
+
+    }
+
     public function excluir($id){
 
-        $this->mensagem->id = $id;
-
-        return $this->mensagem->deletar();
+        return $this->mensagem->excluir($id);
 
     }
 

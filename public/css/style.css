@@ -1,0 +1,51 @@
+body {
+
+background:#f5f6fa;
+
+}
+
+.navbar {
+
+background:#0d6efd;
+
+}
+
+.card {
+
+border:none;
+
+border-radius:12px;
+
+}
+
+table {
+
+margin-top:10px;
+
+}
+
+body.dark-mode {
+
+background:#121212;
+color:white;
+
+}
+
+body.dark-mode .card {
+
+background:#1e1e1e;
+color:white;
+
+}
+
+body.dark-mode table {
+
+color:white;
+
+}
+
+body.dark-mode .navbar {
+
+background:#000;
+
+}
