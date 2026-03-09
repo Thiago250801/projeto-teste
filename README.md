@@ -31,6 +31,7 @@ A aplicação permite que usuários enviem mensagens através de um formulário 
 - MySQL
 - PDO
 - Bootstrap
+- Bootstrap Icons
 - Composer
 - phpdotenv
 
