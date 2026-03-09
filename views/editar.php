@@ -3,34 +3,76 @@
 require_once 'controllers/MensagemController.php';
 
 $controller = new MensagemController();
-
-$mensagem = $controller->buscar($_GET['id']);
+$mensagem   = $controller->buscar($_GET['id']);
 
 ?>
 
 <?php require 'views/header.php'; ?>
 
-<div class="container mt-5">
+<div class="page-wrapper" style="max-width:680px;">
 
-<h3>Editar Mensagem</h3>
+  <div class="mb-3">
+    <a href="index.php" class="btn btn-outline-secondary btn-sm">
+      <i class="bi bi-arrow-left"></i> Voltar
+    </a>
+  </div>
 
-<form action="atualizar.php" method="POST">
+  <div class="edit-card">
 
-<input type="hidden" name="id" value="<?= $mensagem['id'] ?>">
+    <div class="edit-header">
+      <h3><i class="bi bi-pencil-square me-2"></i>Editar Mensagem</h3>
+      <p>Atualize os dados do registro <strong>#<?= $mensagem['id'] ?></strong></p>
+    </div>
 
-<input type="text" name="nome" value="<?= $mensagem['nome'] ?>" class="form-control mb-2">
+    <div class="edit-body">
+      <form action="atualizar.php" method="POST">
 
-<input type="email" name="email" value="<?= $mensagem['email'] ?>" class="form-control mb-2">
+        <input type="hidden" name="id" value="<?= $mensagem['id'] ?>">
 
-<textarea name="mensagem" class="form-control mb-2"><?= $mensagem['mensagem'] ?></textarea>
+        <div class="mb-3">
+          <label class="form-label">
+            <i class="bi bi-person-fill"></i> Nome
+          </label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
+            <input type="text" name="nome"
+                   value="<?= htmlspecialchars($mensagem['nome']) ?>"
+                   class="form-control" required>
+          </div>
+        </div>
 
-<button class="btn btn-success">
+        <div class="mb-3">
+          <label class="form-label">
+            <i class="bi bi-envelope-fill"></i> E-mail
+          </label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-envelope-fill"></i></span>
+            <input type="email" name="email"
+                   value="<?= htmlspecialchars($mensagem['email']) ?>"
+                   class="form-control" required>
+          </div>
+        </div>
 
-Atualizar
+        <div class="mb-4">
+          <label class="form-label">
+            <i class="bi bi-chat-text-fill"></i> Mensagem
+          </label>
+          <textarea name="mensagem" class="form-control" rows="5" required><?= htmlspecialchars($mensagem['mensagem']) ?></textarea>
+        </div>
 
-</button>
+        <div class="d-flex gap-2">
+          <button type="submit" class="btn btn-success">
+            <i class="bi bi-floppy-fill"></i> Salvar Alterações
+          </button>
+          <a href="index.php" class="btn btn-outline-secondary">
+            <i class="bi bi-x-lg"></i> Cancelar
+          </a>
+        </div>
 
-</form>
+      </form>
+    </div>
+
+  </div>
 
 </div>
 

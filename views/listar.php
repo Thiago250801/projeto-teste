@@ -3,130 +3,150 @@
 require_once 'controllers/MensagemController.php';
 
 $controller = new MensagemController();
-
-$mensagens = $controller->listar();
+$mensagens  = $controller->listar();
+$rows       = $mensagens->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
 
 <?php require 'views/header.php'; ?>
 
-<div class="row m-3">
+<div class="page-wrapper">
+  <div class="row g-4">
 
-<div class="col-lg-4">
+    <!-- ── Formulário ── -->
+    <div class="col-lg-4">
+      <div class="card">
 
-<div class="card shadow-sm mb-4">
+        <div class="card-header-custom">
+          <span class="icon-badge" style="background:#eef0fd;">
+            <i class="bi bi-pencil-square" style="color:var(--primary);"></i>
+          </span>
+          <h5>Nova Mensagem</h5>
+        </div>
 
-<div class="card-body">
+        <div class="p-4">
+          <form action="salvar.php" method="POST">
 
-<h5 class="card-title mb-3">Nova Mensagem</h5>
+            <div class="mb-3">
+              <label class="form-label">
+                <i class="bi bi-person"></i> Nome
+              </label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
+                <input type="text" name="nome" placeholder="Seu nome completo"
+                       class="form-control" required>
+              </div>
+            </div>
 
-<form action="salvar.php" method="POST">
+            <div class="mb-3">
+              <label class="form-label">
+                <i class="bi bi-envelope"></i> E-mail
+              </label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-envelope-fill"></i></span>
+                <input type="email" name="email" placeholder="seu@email.com"
+                       class="form-control" required>
+              </div>
+            </div>
 
-<input type="text" name="nome" placeholder="Nome"
-class="form-control mb-3" required>
+            <div class="mb-4">
+              <label class="form-label">
+                <i class="bi bi-chat-text"></i> Mensagem
+              </label>
+              <textarea name="mensagem" placeholder="Escreva sua mensagem aqui..."
+                        class="form-control" rows="5" required></textarea>
+            </div>
 
-<input type="email" name="email" placeholder="Email"
-class="form-control mb-3" required>
+            <button type="submit" class="btn btn-primary w-100">
+              <i class="bi bi-send-fill"></i>
+              <span>Enviar Mensagem</span>
+            </button>
 
-<textarea name="mensagem"
-placeholder="Mensagem"
-class="form-control mb-3"
-rows="4"
-required></textarea>
+          </form>
+        </div>
 
-<button class="btn btn-primary w-100">
+      </div>
+    </div>
 
-Enviar Mensagem
+    <!-- ── Tabela ── -->
+    <div class="col-lg-8">
+      <div class="card">
 
-</button>
+        <div class="card-header-custom">
+          <span class="icon-badge" style="background:#e0f2fe;">
+            <i class="bi bi-inbox-fill" style="color:#0369a1;"></i>
+          </span>
+          <h5>Mensagens Recebidas</h5>
+          <span class="ms-auto badge" style="background:var(--primary-soft);color:var(--primary);font-size:.75rem;font-weight:600;border-radius:99px;padding:.25rem .75rem;">
+            <?= count($rows) ?> mensagem<?= count($rows) !== 1 ? 's' : '' ?>
+          </span>
+        </div>
 
-</form>
+        <div class="p-3">
 
-</div>
+          <?php if (empty($rows)): ?>
+            <div class="empty-state">
+              <i class="bi bi-inbox d-block"></i>
+              <p>Nenhuma mensagem ainda.</p>
+            </div>
 
-</div>
+          <?php else: ?>
+            <div class="table-responsive">
+              <table class="table table-hover mb-0">
+                <thead>
+                  <tr>
+                    <th style="width:60px;">ID</th>
+                    <th>Nome</th>
+                    <th>E-mail</th>
+                    <th style="width:120px;">Ações</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php foreach ($rows as $row): ?>
+                  <tr>
+                    <td>
+                      <span class="badge-id">#<?= $row['id'] ?></span>
+                    </td>
+                    <td>
+                      <div class="name-cell">
+                        <span class="avatar-cell">
+                          <?= strtoupper(mb_substr($row['nome'], 0, 1)) ?>
+                        </span>
+                        <?= htmlspecialchars($row['nome']) ?>
+                      </div>
+                    </td>
+                    <td style="color:var(--text-muted); font-size:.85rem;">
+                      <?= htmlspecialchars($row['email']) ?>
+                    </td>
+                    <td>
+                      <div class="d-flex gap-1">
+                        <a href="index.php?page=visualizar&id=<?= $row['id'] ?>"
+                           class="btn btn-sm btn-info" title="Visualizar">
+                          <i class="bi bi-eye-fill"></i>
+                        </a>
+                        <a href="index.php?page=editar&id=<?= $row['id'] ?>"
+                           class="btn btn-sm btn-warning" title="Editar">
+                          <i class="bi bi-pencil-fill"></i>
+                        </a>
+                        <a href="excluir.php?id=<?= $row['id'] ?>"
+                           class="btn btn-sm btn-danger" title="Excluir"
+                           onclick="return confirm('Deseja excluir esta mensagem?')">
+                          <i class="bi bi-trash3-fill"></i>
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                  <?php endforeach; ?>
+                </tbody>
+              </table>
+            </div>
+          <?php endif; ?>
 
-</div>
+        </div>
+      </div>
+    </div>
 
-<div class="col-lg-8">
-
-<div class="card shadow-sm">
-
-<div class="card-body">
-
-<h5 class="card-title mb-3">
-
-Mensagens Recebidas
-
-</h5>
-
-<table class="table table-hover align-middle">
-
-<thead>
-
-<tr>
-
-<th>ID</th>
-<th>Nome</th>
-<th>Email</th>
-<th>Ações</th>
-
-</tr>
-
-</thead>
-
-<tbody>
-
-<?php while($row = $mensagens->fetch(PDO::FETCH_ASSOC)): ?>
-
-<tr>
-
-<td><?= $row['id'] ?></td>
-
-<td><?= htmlspecialchars($row['nome']) ?></td>
-
-<td><?= htmlspecialchars($row['email']) ?></td>
-
-<td class="d-flex gap-2">
-
-<a href="index.php?page=visualizar&id=<?= $row['id'] ?>"
-class="btn btn-sm btn-info">
-
-👁
-
-</a>
-
-<a href="index.php?page=editar&id=<?= $row['id'] ?>"
-class="btn btn-sm btn-warning">
-
-✏
-
-</a>
-
-<a href="excluir.php?id=<?= $row['id'] ?>"
-class="btn btn-sm btn-danger"
-onclick="return confirm('Excluir mensagem?')">
-
-🗑
-
-</a>
-
-</td>
-
-</tr>
-
-<?php endwhile; ?>
-
-</tbody>
-
-</table>
-
-</div>
-
-</div>
-
-</div>
-
+  </div>
 </div>
 
 <?php require 'views/footer.php'; ?>
