@@ -56,7 +56,8 @@ class Mensagem {
     public function atualizar($id,$nome,$email,$mensagem){
 
         $sql = "UPDATE ".$this->table."
-        SET nome=:nome,email=:email,mensagem=:mensagem
+        SET nome=:nome,email=:email,mensagem=:mensagem,
+        data_atualizacao=NOW()
         WHERE id=:id";
 
         $stmt = $this->conn->prepare($sql);
