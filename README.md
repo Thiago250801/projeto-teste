@@ -2,22 +2,26 @@
 
 Projeto simples desenvolvido para demonstrar conceitos básicos de backend utilizando **PHP** e **MySQL**.
 
-A aplicação permite que usuários enviem mensagens através de um formulário de contato, salvando os dados no banco de dados, listando-os em uma tabela e permitindo a exclusão dos registros.
+A aplicação permite que usuários enviem mensagens através de um formulário de contato, salvando os dados no banco de dados, listando-os em uma tabela, visualizando detalhes, e permitindo a edição e exclusão dos registros, além de possuir uma arquitetura moderna baseada em MVC.
 
 ---
 
 ## Funcionalidades
 
-- Formulário de contato com:
-  - Nome
-  - E-mail
-  - Mensagem
-- Salvamento das mensagens no banco de dados
-- Listagem das mensagens cadastradas
-- Exclusão de registros
-- Uso de **Prepared Statements** para segurança
+- CRUD completo (*Create, Read, Update, Delete*):
+  - Inserção (Enviar mensagem)
+  - Listagem (Ver todas as mensagens enviadas)
+  - Visualização (Ver detalhes de uma mensagem específica)
+  - Edição (Atualizar registros)
+  - Exclusão (Remover um registro do sistema)
+- Arquitetura **MVC** simplificada (**M**odels, **V**iews, **C**ontrollers)
+- Roteamento dinâmico básico centralizado (`router.php`)
+- **Flash Messages** (mensagens de feedback tratadas em sessões)
+- Uso de **Prepared Statements** para reforçar a segurança contra SQL Injection
 - Uso de **variáveis de ambiente (.env)**
-- Estrutura de projeto organizada (Controller + Model)
+- Ponto central de inicialização via `bootstrap.php`
+- Componentização do layout da interface web (`header.php`, `footer.php`)
+- Integração e uso de recursos estáticos (`public/css`, `public/js`)
 
 ---
 
@@ -38,21 +42,35 @@ A aplicação permite que usuários enviem mensagens através de um formulário 
 projeto-teste/
 │
 ├── config/
-│   └── database.php
+│   └── database.php              # Conexão centralizada com o banco de dados
 ├── controllers/
-│   └── Mensagem.php
+│   └── MensagemController.php    # Lida com a lógica de negócio principal
+├── helpers/
+│   └── Flash.php                 # Utilitário para exibir mensagens de sessão (Flash messages)
 ├── models/
-│   └── MensagemController.php
-├── vendor/               # Potes de dependências (Composer)
-├── .env                  # Variáveis de ambiente
+│   └── Mensagem.php              # Mapeamento do banco de dados e comandos SQL
+├── public/                       # Arquivos estáticos de frontend
+│   ├── css/
+│   └── js/
+├── views/                        # Arquivos da interface de usuário, servidos pelo roteador
+│   ├── editar.php                # Tela de edição de um registro
+│   ├── footer.php                # Rodapé do site
+│   ├── header.php                # Cabeçalho do site
+│   ├── listar.php                # Tabela listando as mensagens gravadas
+│   └── visualizar.php            # Visualização detalhada do registro
+├── vendor/               # Pacotes de dependências (Composer)
+├── .env                  # Variáveis de ambiente configuradas
 ├── .env.example          # Variáveis de ambiente (Exemplo base)
 ├── .gitignore            # Arquivos ignorados para commit
-├── composer.json         # Dependências do projeto para Composer
+├── atualizar.php         # Script responsável por tratar requisições de atualização (Update)
+├── bootstrap.php         # Arquivo de inicialização, configuração de sessão e banco
+├── composer.json         # Mapeamento do projeto para Composer
 ├── composer.lock         # Travamento de versões exatas do Composer
-├── excluir.php           # Ação de exclusão do registro no DB
-├── index.php             # Arquivo principal, contendo o formulário e  tabela html
-├── README.md             # Documentação
-└── salvar.php            # Ação de salvação do registro no DB
+├── excluir.php           # Script responsável por requisições de remoção (Delete)
+├── index.php             # Ponto de entrada (Entrypoint), invoca o roteador
+├── README.md             # Documentação do projeto
+├── router.php            # Manipulação do roteamento das páginas (via GET "?page=")
+└── salvar.php            # Script responsável por requisições de salvamento (Create)
 ```
 
 ---
@@ -100,6 +118,7 @@ CREATE TABLE mensagens (
     email VARCHAR(100) NOT NULL,
     mensagem TEXT NOT NULL,
     data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    data_atualizacao TIMESTAMP
 );
 ```
 
@@ -113,17 +132,18 @@ CREATE TABLE mensagens (
 php -S localhost:8000
 ```
 
-2. Acesse o formulário no navegador:
+2. Acesse a aplicação no navegador:
 
 ```text
 http://localhost:8000
 ```
 
-3. Preencha o formulário e clique em "Enviar Mensagem"
-
-4. As mensagens serão salvas no banco de dados e listadas na tabela abaixo do formulário
-
-5. Clique em "Excluir" para remover um registro
+3. Explore o ciclo completo (CRUD):
+   - **Inserir Registro**: Preencha o formulário e clique em "Enviar Mensagem" ou "Salvar"
+   - **Listagem**: Todos os dados salvos estarão listados em tempo real na tela inicial.
+   - **Editar/Atualizar**: Clique em "Editar" de um registro para alterar seu conteúdo
+   - **Visualizar**: Clique na opção de visualização para verificar os dados do registro
+   - **Remover**: Clique em "Excluir" para excluir um contato ou registro específico.
 
 ---
 
@@ -131,9 +151,9 @@ http://localhost:8000
 
 O projeto utiliza as seguintes medidas de segurança:
 
-- **Prepared Statements** para prevenir SQL Injection
-- **Variáveis de ambiente** para credenciais do banco de dados
-- **Validação básica** dos dados do formulário
+- **Prepared Statements** integrado via PDO para prevenir ataques de *SQL Injection*
+- **Variáveis de ambiente** garantindo que as credenciais do banco não sejam expostas
+- **Validação básica** dos dados do formulário e feedback das operações (via *Flash Messages*)
 
 ---
 
