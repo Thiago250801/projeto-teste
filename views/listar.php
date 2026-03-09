@@ -57,7 +57,7 @@ $rows       = $mensagens->fetchAll(PDO::FETCH_ASSOC);
                         class="form-control" rows="5" required></textarea>
             </div>
 
-            <button type="submit" class="btn btn-primary w-100">
+            <button type="submit" class="btn btn-primary w-100 d-flex justify-content-center align-items-center gap-2">
               <i class="bi bi-send-fill"></i>
               <span>Enviar Mensagem</span>
             </button>
