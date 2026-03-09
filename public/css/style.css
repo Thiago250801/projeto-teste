@@ -277,6 +277,22 @@ textarea.form-control { resize: vertical; min-height: 110px; }
   transition: background var(--transition);
 }
 
+/* ── Dark mode table fix ── */
+body.dark-mode .table td,
+body.dark-mode .table th {
+  background-color: var(--surface);
+  border-color: var(--border);
+  color: var(--text);
+}
+
+body.dark-mode .table thead th {
+  background-color: var(--surface-2);
+}
+
+body.dark-mode .table-hover tbody tr:hover td {
+  background-color: var(--primary-soft);
+}
+
 .badge-id {
   display: inline-block;
   background: var(--primary-soft);
